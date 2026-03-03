@@ -1,12 +1,29 @@
 # 🚀 Awesome Web Scaffolding
 
-> A modern, production-ready web application scaffolding with React 19, TypeScript, Vite, Material-UI, TanStack Query, and Supabase Edge Functions. **Everything runs in Docker** - clone and start developing in seconds!
+> A modern, production-ready web application scaffolding with React 19, TypeScript, Vite, Material-UI, TanStack Query, and Supabase Edge Functions.
+
+## 🐳 **100% DOCKERIZED - ZERO LOCAL DEPENDENCIES**
+
+**Everything runs inside containers. No Node.js, npm, or Deno installation required!**
+
+```bash
+# Only 3 commands - works on any machine with Docker!
+git clone https://github.com/ivncmp/awesome-web-scaffolding.git my-app
+cd my-app
+docker compose up -d
+```
+
+✅ **Frontend ready:** http://localhost:5173  
+✅ **Backend API ready:** http://localhost:8000  
+✅ **Hot reload enabled** - edit code, see changes instantly!
+
+---
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF.svg)](https://vitejs.dev/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
+[![Docker](https://img.shields.io/badge/Docker-100%25-2496ED.svg)](https://www.docker.com/)
 
 ---
 
@@ -35,42 +52,92 @@ docker compose up -d
 
 ---
 
-## 🐳 What's Running?
+## 🐳 What's Inside the Containers?
 
-Two containers start automatically:
+**Two containers run automatically when you `docker compose up -d`:**
 
-### 1. Frontend Container (`awesome-scaffolding`)
-- **Base Image:** Node 22 Alpine
-- **Stack:** React 19 + TypeScript 5.8 + Vite 6
-- **UI:** Material-UI 7 + TailwindCSS 4
-- **State:** TanStack Query 5
-- **Port:** **5173** → container:3000
-- **Volumes:** Live code sync (hot reload)
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  HOST MACHINE (your computer)                                   │
+│  ┌────────────────────────────────────────────────────────────┐ │
+│  │  Docker Network: awesome-net                               │ │
+│  │                                                            │ │
+│  │  ┌──────────────────────────┐  ┌──────────────────────┐  │ │
+│  │  │ awesome-scaffolding      │  │ awesome-edge-        │  │ │
+│  │  │ (Frontend Container)     │  │ functions            │  │ │
+│  │  │                          │  │ (Backend Container)  │  │ │
+│  │  │ 📦 Node.js 22 Alpine     │  │ 📦 Deno 2.1.8 Alpine │  │ │
+│  │  │ 📦 npm + all packages    │  │ 📦 Deno runtime      │  │ │
+│  │  │ 📦 React 19              │  │ 📦 Edge Functions    │  │ │
+│  │  │ 📦 TypeScript 5.8        │  │                      │  │ │
+│  │  │ 📦 Vite 6 dev server     │  │ 🔗 Port 8000         │  │ │
+│  │  │ 📦 Material-UI 7         │  │ 📡 /hello endpoint   │  │ │
+│  │  │ 📦 TailwindCSS 4         │  │ 🔥 Hot reload        │  │ │
+│  │  │                          │  │                      │  │ │
+│  │  │ 🔗 Port 5173             │  │                      │  │ │
+│  │  │ 🔥 Hot reload enabled    │  │                      │  │ │
+│  │  └──────────────────────────┘  └──────────────────────┘  │ │
+│  │           ▲                              ▲               │ │
+│  │           │ Volume Mount                 │ Volume Mount  │ │
+│  │           │ (live sync)                  │ (live sync)   │ │
+│  └───────────┼──────────────────────────────┼───────────────┘ │
+│              │                              │                 │
+│       ┌──────▼──────┐              ┌────────▼────────┐        │
+│       │ ./frontend/ │              │ ./backend/      │        │
+│       │ (your code) │              │ (your code)     │        │
+│       └─────────────┘              └─────────────────┘        │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-### 2. Backend Container (`awesome-edge-functions`)
-- **Base Image:** Deno 2.1.8 Alpine
-- **Runtime:** Supabase Edge Functions
-- **Endpoint:** `/hello` with example JSON
-- **Port:** **8000**
-- **Volumes:** Live code sync (hot reload)
+### 1️⃣ Frontend Container (`awesome-scaffolding`)
+**Everything you need for React development - all inside the container:**
+- ✅ Node.js 22 Alpine (no local installation needed)
+- ✅ npm + 436 packages auto-installed
+- ✅ React 19 + TypeScript 5.8 + Vite 6
+- ✅ Material-UI 7 + TailwindCSS 4
+- ✅ TanStack Query 5 + React Router 7
+- ✅ Vitest + Testing Library
+- ✅ ESLint + Prettier
+- **Port:** http://localhost:5173
+- **Volumes:** `./frontend/` synced live (edit → instant reload)
 
-**Network:** Both containers share `awesome-net` bridge network
+### 2️⃣ Backend Container (`awesome-edge-functions`)
+**Supabase Edge Functions runtime - all inside the container:**
+- ✅ Deno 2.1.8 Alpine (no local installation needed)
+- ✅ Supabase Edge Functions
+- ✅ `/hello` endpoint with example JSON
+- ✅ CORS configured
+- **Port:** http://localhost:8000
+- **Volumes:** `./backend/` synced live (edit → instant reload)
+
+### 🔗 Network
+Both containers communicate via `awesome-net` bridge network.
+
+**You only edit files on your machine** - Docker handles everything else!
 
 ---
 
 ## 💻 Requirements
 
-**Only Docker & Git required:**
-- Docker 20.10+ (with Docker Compose V2)
-- Git
+| ✅ **What You NEED** | ❌ **What You DON'T NEED** |
+|---------------------|---------------------------|
+| Docker 20.10+ (with Compose V2) | Node.js |
+| Git | npm / pnpm / yarn |
+| A code editor (VS Code, etc.) | Deno |
+| A web browser | TypeScript compiler |
+| | Vite CLI |
+| | Any JavaScript runtime |
+| | Any global packages |
 
-**NOT required:**
-- ❌ Node.js
-- ❌ npm/pnpm/yarn
-- ❌ Deno
-- ❌ Any other tools
+**Why?** Because everything runs inside containers:
+- 📦 Node.js 22 → inside `awesome-scaffolding` container
+- 📦 npm + all packages → inside `awesome-scaffolding` container
+- 📦 Deno 2.1.8 → inside `awesome-edge-functions` container
+- 📦 TypeScript compiler → inside `awesome-scaffolding` container
+- 📦 Vite dev server → inside `awesome-scaffolding` container
+- 📦 All 436 npm packages → inside `awesome-scaffolding` container
 
-Everything runs inside containers!
+**You just need Docker!** 🐳
 
 ---
 
