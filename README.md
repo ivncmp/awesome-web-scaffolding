@@ -10,9 +10,9 @@
 
 ---
 
-## ⚡ Quick Start (Docker - Recommended)
+## ⚡ Quick Start (100% Docker - Zero Dependencies)
 
-**Clone, start, and go! Everything runs out of the box:**
+**No Node.js or Deno required! Everything runs in Docker:**
 
 ```bash
 git clone https://github.com/ivncmp/awesome-web-scaffolding.git my-project
@@ -25,7 +25,13 @@ docker compose up -d
 - **Frontend:** http://localhost:5173
 - **Backend API:** http://localhost:8000
 
-**Hot reload enabled** - edit code and see changes instantly!
+**What happens automatically:**
+- ✅ Node.js 22 installs inside container
+- ✅ npm install runs automatically
+- ✅ Deno 2.1.8 ready in backend container
+- ✅ Both servers start with hot reload
+
+**Edit code and see changes instantly** - no restart needed!
 
 ---
 
@@ -34,35 +40,37 @@ docker compose up -d
 Two containers start automatically:
 
 ### 1. Frontend Container (`awesome-scaffolding`)
-- React 19 + TypeScript 5.8 + Vite 6
-- Material-UI 7 + TailwindCSS 4
-- TanStack Query 5
-- Port: **5173**
+- **Base Image:** Node 22 Alpine
+- **Stack:** React 19 + TypeScript 5.8 + Vite 6
+- **UI:** Material-UI 7 + TailwindCSS 4
+- **State:** TanStack Query 5
+- **Port:** **5173** → container:3000
+- **Volumes:** Live code sync (hot reload)
 
 ### 2. Backend Container (`awesome-edge-functions`)
-- Supabase Edge Functions (Deno 2.1.8)
-- `/hello` endpoint with example data
-- Port: **8000**
+- **Base Image:** Deno 2.1.8 Alpine
+- **Runtime:** Supabase Edge Functions
+- **Endpoint:** `/hello` with example JSON
+- **Port:** **8000**
+- **Volumes:** Live code sync (hot reload)
+
+**Network:** Both containers share `awesome-net` bridge network
 
 ---
 
-## 🛠️ Local Development (Without Docker)
+## 💻 Requirements
 
-If you prefer running locally:
+**Only Docker & Git required:**
+- Docker 20.10+ (with Docker Compose V2)
+- Git
 
-```bash
-# Install dependencies
-npm install
+**NOT required:**
+- ❌ Node.js
+- ❌ npm/pnpm/yarn
+- ❌ Deno
+- ❌ Any other tools
 
-# Setup git hooks
-npm run prepare
-
-# Start frontend
-npm run dev
-
-# Start backend (separate terminal)
-deno run --allow-net --allow-env --allow-read backend/supabase/functions/hello/index.ts
-```
+Everything runs inside containers!
 
 ---
 
@@ -189,28 +197,43 @@ docker exec -it awesome-edge-functions sh
 
 ---
 
-## 🧪 Available Scripts
+## 🧪 Running Scripts (Inside Docker)
+
+**All scripts run inside containers:**
 
 ```bash
-npm run dev              # Start Vite dev server (port 3000)
-npm run build            # TypeScript check + production build
-npm run preview          # Preview production build
+# Development (already running with docker compose up)
+docker exec awesome-scaffolding npm run dev
 
-npm run lint             # Run ESLint
-npm run lint:fix         # Fix ESLint issues
-npm run format           # Format code with Prettier
-npm run format:check     # Check code formatting
+# Build for production
+docker exec awesome-scaffolding npm run build
 
-npm run test             # Run tests in watch mode
-npm run test:run         # Run tests once (CI mode)
-npm run test:ui          # Run tests with UI
-npm run test:coverage    # Generate coverage report
+# Run tests
+docker exec awesome-scaffolding npm run test:run
 
-npm run deno:check       # Type-check edge functions
-npm run deno:lint        # Lint edge functions
+# Linting
+docker exec awesome-scaffolding npm run lint
+docker exec awesome-scaffolding npm run format
 
-npm run check            # Run ALL checks (lint + format + test + typecheck + build)
-npm run deploy-backend   # Deploy edge functions to Supabase
+# Type-check edge functions
+docker exec awesome-edge-functions deno check hello/index.ts
+
+# Full quality check
+docker exec awesome-scaffolding npm run check
+```
+
+**Or enter the container shell:**
+```bash
+# Frontend container
+docker exec -it awesome-scaffolding sh
+npm run test
+npm run lint
+exit
+
+# Backend container
+docker exec -it awesome-edge-functions sh
+deno check hello/index.ts
+exit
 ```
 
 ---
@@ -453,13 +476,19 @@ docker compose up -d --build
 ### Frontend issues
 
 **Vite not starting:**
-- Check port 5173 is available
-- Verify `package.json` has correct scripts
-- Clear node_modules: `rm -rf node_modules && npm install`
+- Check port 5173 is available: `ss -tuln | grep 5173`
+- Check container logs: `docker logs awesome-scaffolding`
+- Rebuild container: `docker compose up -d --build`
 
 **TypeScript errors:**
 ```bash
-npm run build  # Check for type errors
+docker exec awesome-scaffolding npm run build  # Check for type errors
+```
+
+**Need to reinstall dependencies:**
+```bash
+docker compose down
+docker compose up -d --build  # Rebuilds and reinstalls everything
 ```
 
 ### Backend issues
@@ -520,12 +549,25 @@ MIT License - see [LICENSE](./LICENSE) file for details.
 
 **Ready to build something awesome? 🚀**
 
+**Just Docker required:**
+
 ```bash
-git clone https://github.com/ivncmp/awesome-web-scaffolding.git
-cd awesome-web-scaffolding
+# Only 3 commands needed!
+git clone https://github.com/ivncmp/awesome-web-scaffolding.git my-app
+cd my-app
 docker compose up -d
+
+# ✅ Frontend: http://localhost:5173
+# ✅ Backend: http://localhost:8000
+# ✅ No npm install, no dependencies, just Docker!
 ```
 
-**That's it! Start coding at http://localhost:5173** ✨
+**That's it! Start coding immediately** ✨
+
+**Everything runs inside containers:**
+- Node.js, npm, dependencies → in container
+- Deno runtime → in container  
+- Your code → synced with hot reload
+- You → just edit files and refresh browser!
 
 For detailed documentation, see [CLAUDE.md](./CLAUDE.md)
