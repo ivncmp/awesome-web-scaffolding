@@ -1,0 +1,21 @@
+services:
+  awesome-scaffolding:
+    build: .
+    container_name: awesome-scaffolding
+    restart: unless-stopped
+    ports:
+      - "5173:3000"
+    volumes:
+      - ./frontend:/app/frontend
+      - ./backend:/app/backend
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL:-https://your-project.supabase.co}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY:-your-anon-key}
+    networks:
+      - awesome-net
+
+networks:
+  awesome-net:
+    driver: bridge
