@@ -1,175 +1,531 @@
-# Awesome Web Scaffolding
+# 🚀 Awesome Web Scaffolding
 
-> A modern, production-ready web application scaffolding with React, TypeScript, Vite, Material-UI, TanStack Query, and Supabase.
+> A modern, production-ready web application scaffolding with React 19, TypeScript, Vite, Material-UI, TanStack Query, and Supabase Edge Functions. **Everything runs in Docker** - clone and start developing in seconds!
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-5-646CFF.svg)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF.svg)](https://vitejs.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 
-## ✨ Features
+---
 
-- ⚡ **Fast Development** - Vite for instant HMR
-- 🎨 **Modern UI** - Material-UI with custom theming
-- 🔄 **Smart Caching** - TanStack Query with 5min staleTime
-- 🏗️ **Feature-Based** - Scalable architecture
-- 🧪 **Well Tested** - Vitest + Testing Library
-- 🔒 **Type-Safe** - Full TypeScript support
-- 🚀 **Serverless Backend** - Supabase Edge Functions (Deno)
-- 📦 **Zero Config Deploy** - Vercel ready
+## ⚡ Quick Start (Docker - Recommended)
 
-## 🚀 Quick Start
+**Clone, start, and go! Everything runs out of the box:**
+
+```bash
+git clone https://github.com/ivncmp/awesome-web-scaffolding.git my-project
+cd my-project
+docker compose up -d
+```
+
+**That's it!** 🎉
+
+- **Frontend:** http://localhost:5173
+- **Backend API:** http://localhost:8000
+
+**Hot reload enabled** - edit code and see changes instantly!
+
+---
+
+## 🐳 What's Running?
+
+Two containers start automatically:
+
+### 1. Frontend Container (`awesome-scaffolding`)
+- React 19 + TypeScript 5.8 + Vite 6
+- Material-UI 7 + TailwindCSS 4
+- TanStack Query 5
+- Port: **5173**
+
+### 2. Backend Container (`awesome-edge-functions`)
+- Supabase Edge Functions (Deno 2.1.8)
+- `/hello` endpoint with example data
+- Port: **8000**
+
+---
+
+## 🛠️ Local Development (Without Docker)
+
+If you prefer running locally:
 
 ```bash
 # Install dependencies
-pnpm install
+npm install
 
 # Setup git hooks
-pnpm prepare
+npm run prepare
 
-# Copy environment file
-cp .env.example .env
+# Start frontend
+npm run dev
 
-# Start development server
-pnpm dev
+# Start backend (separate terminal)
+deno run --allow-net --allow-env --allow-read backend/supabase/functions/hello/index.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the example page.
+---
 
-## 📚 Documentation
+## ✨ Features
 
-See [CLAUDE.md](./CLAUDE.md) for complete documentation including:
-- Architecture overview
-- Code patterns and conventions
-- Testing strategies
-- Deployment guides
-- Contributing guidelines
+- ⚡ **Instant Setup** - `docker compose up -d` and start coding
+- 🎨 **Modern UI** - Material-UI 7 with custom theming + TailwindCSS 4
+- 🔄 **Smart Caching** - TanStack Query with 5min staleTime
+- 🏗️ **Feature-Based Architecture** - Scalable and maintainable
+- 🧪 **Testing Ready** - Vitest + Testing Library configured
+- 🔒 **Type-Safe** - Full TypeScript 5.8 strict mode
+- 🦕 **Serverless Backend** - Supabase Edge Functions (Deno runtime)
+- 🐳 **Dockerized** - Frontend + Backend with hot reload
+- 🚀 **Deploy Ready** - Vercel config included
+- 📝 **Well Documented** - [CLAUDE.md](./CLAUDE.md) for detailed docs
+
+---
 
 ## 🏗️ Stack
 
-**Frontend:**
-- React 18 + TypeScript
-- Vite (build tool)
-- Material-UI (components)
-- TanStack Query (server state)
-- React Router (routing)
-- Vitest + Testing Library (testing)
+### Frontend
+- **React 19.1** - Latest React with concurrent features
+- **TypeScript 5.8** - Full type safety
+- **Vite 6** - Lightning fast HMR with SWC
+- **Material-UI 7** - Beautiful React components
+- **TailwindCSS 4** - Utility-first CSS
+- **TanStack Query 5** - Server state management
+- **React Router 7** - Client-side routing
+- **Vitest 3** - Unit testing
+- **ESLint 9** + **Prettier** - Code quality
 
-**Backend:**
-- Supabase Edge Functions (Deno runtime)
-- PostgreSQL (via Supabase)
+### Backend
+- **Deno 2.1.8** - Secure TypeScript runtime
+- **Supabase Edge Functions** - Serverless functions
+- **PostgreSQL 17** - Database (when using Supabase)
 
-**Tooling:**
-- ESLint + Prettier
-- Husky + lint-staged
-- TypeScript strict mode
+### DevOps
+- **Docker** - Containerized development
+- **Husky** - Git hooks
+- **lint-staged** - Pre-commit linting
+- **Vercel** - Deployment
 
-## 📁 Structure
+---
+
+## 📁 Project Structure
 
 ```
 awesome-web-scaffolding/
-├── frontend/           # React app
-│   └── src/
-│       ├── features/   # Feature modules
-│       ├── shared/     # Shared resources
-│       └── styles/     # Global styles
-├── backend/
-│   └── supabase/
-│       ├── functions/  # Edge Functions
-│       └── migrations/ # Database
-└── package.json
+│
+├── frontend/                    # React application
+│   ├── src/
+│   │   ├── features/           # Feature modules
+│   │   │   └── example/        # Example feature (delete when starting)
+│   │   │       ├── pages/      # Page components
+│   │   │       ├── components/ # Feature-specific components
+│   │   │       ├── hooks/      # Custom hooks
+│   │   │       ├── service.ts  # API calls
+│   │   │       └── types.ts    # TypeScript types
+│   │   │
+│   │   ├── shared/             # Shared resources
+│   │   │   ├── config/         # Supabase, theme config
+│   │   │   ├── layout/         # Layout components
+│   │   │   ├── ui/             # Reusable UI components
+│   │   │   └── types/          # Shared types
+│   │   │
+│   │   ├── styles/             # Global CSS
+│   │   ├── App.tsx             # Router + QueryClient setup
+│   │   └── main.tsx            # Entry point
+│   │
+│   ├── index.html
+│   ├── vite.config.ts          # Vite config with @ alias
+│   ├── vitest.config.ts        # Test config
+│   └── tsconfig.json           # TypeScript config
+│
+├── backend/supabase/
+│   ├── functions/              # Edge Functions
+│   │   ├── _shared/            # Shared utilities
+│   │   │   ├── client.ts       # Supabase client
+│   │   │   ├── cors.ts         # CORS helpers
+│   │   │   └── response.ts     # Response helpers
+│   │   │
+│   │   └── hello/              # Example function
+│   │       └── index.ts        # Function handler
+│   │
+│   └── migrations/             # Database migrations (numbered)
+│       └── 001_initial_schema.sql
+│
+├── Dockerfile                  # Frontend container
+├── docker-compose.yml          # Full stack orchestration
+├── package.json                # Dependencies + scripts
+├── eslint.config.js            # ESLint config
+├── .prettierrc                 # Prettier config
+├── .env.example                # Environment template
+├── vercel.json                 # Vercel deployment config
+├── CLAUDE.md                   # Developer documentation
+└── README.md                   # This file
 ```
 
-## 🧪 Scripts
+---
+
+## 🚀 Docker Commands
 
 ```bash
-pnpm dev              # Start dev server
-pnpm build            # Production build
-pnpm preview          # Preview build
-pnpm test             # Run tests
-pnpm test:watch       # Watch mode
-pnpm lint             # Lint code
-pnpm format           # Format code
+# Start everything
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop everything
+docker compose down
+
+# Rebuild after changing Dockerfile
+docker compose up -d --build
+
+# Restart a specific service
+docker compose restart awesome-scaffolding
+docker compose restart awesome-edge-functions
+
+# Shell into container
+docker exec -it awesome-scaffolding sh
+docker exec -it awesome-edge-functions sh
 ```
 
-## 🎯 Core Patterns
+---
 
-### Components
+## 🧪 Available Scripts
+
+```bash
+npm run dev              # Start Vite dev server (port 3000)
+npm run build            # TypeScript check + production build
+npm run preview          # Preview production build
+
+npm run lint             # Run ESLint
+npm run lint:fix         # Fix ESLint issues
+npm run format           # Format code with Prettier
+npm run format:check     # Check code formatting
+
+npm run test             # Run tests in watch mode
+npm run test:run         # Run tests once (CI mode)
+npm run test:ui          # Run tests with UI
+npm run test:coverage    # Generate coverage report
+
+npm run deno:check       # Type-check edge functions
+npm run deno:lint        # Lint edge functions
+
+npm run check            # Run ALL checks (lint + format + test + typecheck + build)
+npm run deploy-backend   # Deploy edge functions to Supabase
+```
+
+---
+
+## 🎯 Code Patterns
+
+### Component Pattern (MANDATORY)
 ```typescript
-interface Props {
+interface MyComponentProps {
   title: string;
+  count: number;
 }
 
-export default function Component({ title }: Readonly<Props>) {
-  return <div>{title}</div>;
+export default function MyComponent({ title, count }: Readonly<MyComponentProps>) {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>Count: {count}</p>
+    </div>
+  );
 }
 ```
 
-### Hooks with TanStack Query
+**Rules:**
+- ✅ Default export
+- ✅ Separate `interface Props`
+- ✅ `Readonly<Props>` wrapper
+- ❌ No arrow functions
+- ❌ No `React.FC`
+
+### Custom Hook with TanStack Query
 ```typescript
+import { useQuery } from '@tanstack/react-query';
+import { fetchExample } from './example.service';
+
 export function useExample() {
   return useQuery({
     queryKey: ['example'],
     queryFn: fetchExample,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes (standard)
   });
 }
 ```
 
-### Service Layer
+### Service Layer (API Calls)
 ```typescript
-export async function fetchData(): Promise<Data> {
-  const response = await fetch(`${EDGE_FUNCTION_URL}/endpoint`);
-  if (!response.ok) throw new Error('Failed');
-  return response.json();
+const EDGE_FUNCTION_URL = import.meta.env.VITE_SUPABASE_URL;
+
+export async function fetchExample(): Promise<ExampleItem[]> {
+  const response = await fetch(`${EDGE_FUNCTION_URL}/hello`);
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch example data');
+  }
+  
+  const data = await response.json();
+  return data.items;
 }
 ```
+
+### Edge Function Pattern
+```typescript
+import { handleCors } from '../_shared/cors.ts';
+import { jsonResponse, errorResponse } from '../_shared/response.ts';
+
+Deno.serve(async (req) => {
+  // Handle CORS preflight
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
+
+  try {
+    const data = { message: 'Hello!' };
+    return jsonResponse(data);
+  } catch (error) {
+    return errorResponse(error.message);
+  }
+});
+```
+
+---
 
 ## 🔧 Configuration
 
 ### Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+
 ```env
-VITE_SUPABASE_URL=http://localhost:54321
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+VITE_SUPABASE_URL=http://localhost:8000
+VITE_SUPABASE_ANON_KEY=demo-key
+```
+
+**For production (Supabase):**
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
 
 ### Path Alias
-Use `@/` for imports:
+
+Use `@/` for clean imports:
+
 ```typescript
+// ✅ Good
 import Button from '@/shared/ui/Button';
+import { useExample } from '@/features/example/hooks/useExample';
+
+// ❌ Avoid
+import Button from '../../../shared/ui/Button';
 ```
+
+Configured in:
+- `frontend/vite.config.ts`
+- `frontend/tsconfig.json`
+- `frontend/vitest.config.ts`
+
+---
+
+## 📝 Creating a New Feature
+
+1. **Create feature folder:**
+   ```bash
+   mkdir -p frontend/src/features/myfeature/{pages,components,hooks}
+   touch frontend/src/features/myfeature/{service.ts,types.ts}
+   ```
+
+2. **Add page component:**
+   ```typescript
+   // frontend/src/features/myfeature/pages/MyPage.tsx
+   export default function MyPage() {
+     return <div>My Feature</div>;
+   }
+   ```
+
+3. **Register route in App.tsx:**
+   ```typescript
+   import MyPage from '@/features/myfeature/pages/MyPage';
+   
+   <Route path="/myfeature" element={<MyPage />} />
+   ```
+
+4. **Delete example feature when ready:**
+   ```bash
+   rm -rf frontend/src/features/example
+   ```
+
+---
 
 ## 🚢 Deployment
 
 ### Frontend (Vercel)
-```bash
-vercel
-```
+
+**One-click deploy:**
+
+1. Push to GitHub
+2. Import to Vercel
+3. Set environment variables:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+4. Deploy automatically on every push to `main`
+
+**Vercel config already included in `vercel.json`**
 
 ### Backend (Supabase)
-```bash
-supabase functions deploy
-```
 
-## 📝 Adding Features
-
-1. Create `features/myfeature/` folder
-2. Add: `pages/`, `components/`, `hooks/`, `service.ts`, `types.ts`
-3. Register route in `App.tsx`
-
-## 🤝 Contributing
-
-1. Follow existing patterns
-2. Write tests
-3. Run linting before commit
-4. Keep components focused
-
-## 📄 License
-
-MIT - See [LICENSE](./LICENSE) for details
+1. Create Supabase project: https://supabase.com
+2. Link project:
+   ```bash
+   supabase link --project-ref your-project-ref
+   ```
+3. Deploy functions:
+   ```bash
+   npm run deploy-backend
+   ```
 
 ---
 
-**Ready to build something awesome? Start here! 🚀**
+## 🧹 Code Quality
+
+### Pre-commit Hooks (Husky + lint-staged)
+
+Automatically runs on `git commit`:
+- ESLint fix
+- Prettier format
+- Only on staged files
+
+### Manual Quality Check
+
+Run full check before deploying:
+```bash
+npm run check
+```
+
+Runs:
+- ESLint
+- Prettier check
+- Vitest tests
+- TypeScript compiler
+- Vite build
+- Deno lint + type-check
+- React Doctor (optional)
+
+---
+
+## 🎓 Learning Resources
+
+- [CLAUDE.md](./CLAUDE.md) - Complete technical documentation
+- [React 19 Docs](https://react.dev/)
+- [Vite Guide](https://vitejs.dev/guide/)
+- [Material-UI](https://mui.com/material-ui/)
+- [TanStack Query](https://tanstack.com/query/latest)
+- [Supabase Edge Functions](https://supabase.com/docs/guides/functions)
+- [Deno Manual](https://docs.deno.com/)
+
+---
+
+## 🐛 Troubleshooting
+
+### Docker issues
+
+**Port already in use:**
+```bash
+docker compose down
+# Change ports in docker-compose.yml if needed
+docker compose up -d
+```
+
+**Container won't start:**
+```bash
+docker compose logs awesome-scaffolding
+docker compose logs awesome-edge-functions
+```
+
+**Clear everything and rebuild:**
+```bash
+docker compose down -v
+docker compose up -d --build
+```
+
+### Frontend issues
+
+**Vite not starting:**
+- Check port 5173 is available
+- Verify `package.json` has correct scripts
+- Clear node_modules: `rm -rf node_modules && npm install`
+
+**TypeScript errors:**
+```bash
+npm run build  # Check for type errors
+```
+
+### Backend issues
+
+**Edge function not responding:**
+```bash
+docker logs awesome-edge-functions
+curl http://localhost:8000  # Test directly
+```
+
+**Deno errors:**
+- Check `backend/supabase/functions/deno.json` config
+- Verify imports in function files
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Follow existing patterns (see Code Patterns above)
+4. Write tests for new features
+5. Run `npm run check` before committing
+6. Commit: `git commit -m 'feat: add amazing feature'`
+7. Push: `git push origin feature/amazing-feature`
+8. Open a Pull Request
+
+**Commit Convention:**
+- `feat:` New feature
+- `fix:` Bug fix
+- `docs:` Documentation
+- `style:` Formatting
+- `refactor:` Code restructure
+- `test:` Tests
+- `chore:` Maintenance
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](./LICENSE) file for details.
+
+---
+
+## 🌟 Why Use This Scaffolding?
+
+✅ **Zero Config** - Clone and start developing immediately  
+✅ **Best Practices** - Production-ready patterns built-in  
+✅ **Fully Typed** - TypeScript everywhere  
+✅ **Tested** - Testing setup included  
+✅ **Scalable** - Feature-based architecture grows with your project  
+✅ **Modern Stack** - Latest versions of all tools  
+✅ **Docker Ready** - Consistent development environment  
+✅ **Deploy Ready** - Vercel config included  
+✅ **Well Documented** - CLAUDE.md + inline comments  
+
+---
+
+**Ready to build something awesome? 🚀**
+
+```bash
+git clone https://github.com/ivncmp/awesome-web-scaffolding.git
+cd awesome-web-scaffolding
+docker compose up -d
+```
+
+**That's it! Start coding at http://localhost:5173** ✨
 
 For detailed documentation, see [CLAUDE.md](./CLAUDE.md)
