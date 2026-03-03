@@ -18,18 +18,21 @@ services:
     depends_on:
       - edge-functions
 
+  # Edge Functions - serves all functions via simple router
   edge-functions:
     image: denoland/deno:alpine-2.1.8
     container_name: awesome-edge-functions
     restart: unless-stopped
     working_dir: /app
-    command: deno run --allow-net --allow-env --allow-read hello/index.ts
+    command: deno run --allow-net --allow-env --allow-read --allow-import server.ts
     ports:
       - "8000:8000"
     volumes:
       - ./backend/supabase/functions:/app
     networks:
       - awesome-net
+    environment:
+      - DENO_DIR=/deno-dir
 
 networks:
   awesome-net:

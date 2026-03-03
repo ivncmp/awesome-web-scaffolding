@@ -8,7 +8,11 @@ interface ExampleItem {
   createdAt: string;
 }
 
-Deno.serve(async (req) => {
+/**
+ * Hello Function Handler
+ * Returns example data for the scaffolding demo
+ */
+export const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight
   const corsResponse = handleCors(req);
   if (corsResponse) return corsResponse;
@@ -47,4 +51,9 @@ Deno.serve(async (req) => {
       error instanceof Error ? error.message : 'Unknown error'
     );
   }
-});
+};
+
+// For standalone execution (npm run deno:check, local testing, etc.)
+if (import.meta.main) {
+  Deno.serve(handler);
+}
