@@ -11,8 +11,23 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL:-https://your-project.supabase.co}
-      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY:-your-anon-key}
+      - VITE_SUPABASE_URL=http://localhost:8000
+      - VITE_SUPABASE_ANON_KEY=demo-key
+    networks:
+      - awesome-net
+    depends_on:
+      - edge-functions
+
+  edge-functions:
+    image: denoland/deno:alpine-2.1.8
+    container_name: awesome-edge-functions
+    restart: unless-stopped
+    working_dir: /app
+    command: deno run --allow-net --allow-env --allow-read hello/index.ts
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/supabase/functions:/app
     networks:
       - awesome-net
 
